@@ -1,0 +1,2637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《杀戮尖塔2》五角色完整流派攻略</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --bg: #0a0e1a;
+  --bg2: #111827;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.08);
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --accent: #06b6d4;
+  --red: #ef4444;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --purple: #a855f7;
+  --blue: #3b82f6;
+  --pink: #ec4899;
+  --orange: #f97316;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  width:100%; height:100%;
+  font-family:'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.deck {
+  width:100%; height:100%;
+  position:relative;
+}
+
+.slide {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  display:none;
+  flex-direction:column;
+  padding: 28px 40px 20px 40px;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.slide.active { display:flex; }
+
+/* ===== TITLE SLIDE ===== */
+.title-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 40%, rgba(6,182,212,0.12) 0%, transparent 70%),
+              var(--bg);
+}
+.title-slide h1 {
+  font-size: 3rem; font-weight:900;
+  background: linear-gradient(135deg, #06b6d4, #a855f7);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  text-shadow: 0 0 40px rgba(6,182,212,0.3);
+  margin-bottom: 16px;
+}
+.title-slide .subtitle { font-size:1.1rem; color:var(--text-dim); margin-bottom:24px; }
+.title-slide .tags { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.title-slide .tag {
+  padding:6px 18px; border-radius:20px; font-size:0.85rem; font-weight:500;
+}
+
+/* ===== CHAPTER DIVIDER ===== */
+.chapter-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.chapter-slide .chapter-num {
+  font-size:0.9rem; letter-spacing:4px; text-transform:uppercase;
+  margin-bottom:12px;
+}
+.chapter-slide h2 {
+  font-size:2.6rem; font-weight:900; margin-bottom:8px;
+}
+.chapter-slide .chapter-sub {
+  font-size:1rem; color:var(--text-dim); margin-bottom:20px;
+}
+.chapter-slide .chapter-stats {
+  display:flex; gap:24px; justify-content:center; flex-wrap:wrap;
+}
+.chapter-slide .stat-box {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:10px; padding:12px 20px; min-width:120px;
+}
+.chapter-slide .stat-box .stat-label { font-size:0.75rem; color:var(--text-dim); }
+.chapter-slide .stat-box .stat-value { font-size:1.1rem; font-weight:700; margin-top:4px; }
+
+/* ===== ARCHETYPE FULL PAGE ===== */
+.arch-slide {
+  padding: 20px 36px 16px 36px;
+}
+.arch-header {
+  display:flex; align-items:center; gap:16px; margin-bottom:12px;
+  padding-bottom:10px; border-bottom:2px solid var(--card-border);
+}
+.arch-badge {
+  padding:4px 14px; border-radius:16px; font-size:0.75rem; font-weight:700;
+  letter-spacing:1px;
+}
+.arch-header h3 {
+  font-size:1.5rem; font-weight:900;
+}
+.arch-header .arch-desc {
+  font-size:0.82rem; color:var(--text-dim); margin-left:auto;
+}
+
+/* Main content grid: cards left, relics+startup right */
+.arch-body {
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap: 16px;
+  flex:1;
+  min-height:0;
+  align-content: start;
+}
+
+/* Strategy section for sparse pages */
+.strategy-section {
+  margin-top:8px;
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:8px;
+}
+.strategy-box {
+  background: var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  padding:10px 12px;
+}
+.strategy-box h5 {
+  font-size:0.78rem; font-weight:700; margin-bottom:5px;
+  display:flex; align-items:center; gap:6px;
+}
+.strategy-box p {
+  font-size:0.7rem; color:var(--text-dim); line-height:1.45; margin:0;
+}
+.matchup-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap:6px;
+  margin-top:6px;
+}
+.matchup-item {
+  background: rgba(255,255,255,0.02);
+  border:1px solid var(--card-border);
+  border-radius:6px;
+  padding:6px 10px;
+}
+.matchup-item .enemy { font-size:0.72rem; font-weight:600; margin-bottom:2px; }
+.matchup-item .advice { font-size:0.66rem; color:var(--text-dim); }
+
+/* Cards section */
+.cards-section h4 {
+  font-size:0.85rem; font-weight:700; margin-bottom:8px;
+  display:flex; align-items:center; gap:8px;
+}
+.cards-section h4::before {
+  content:''; display:inline-block; width:3px; height:14px; border-radius:2px;
+}
+
+.cards-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.card-item {
+  background: var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  padding:8px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  transition: border-color 0.2s;
+}
+.card-item:hover { border-color: rgba(255,255,255,0.2); }
+
+.card-top {
+  display:flex; align-items:center; gap:6px;
+}
+.card-name {
+  font-size:0.82rem; font-weight:700;
+}
+.card-type-tag {
+  font-size:0.6rem; padding:1px 6px; border-radius:8px; font-weight:600;
+  letter-spacing:0.5px; flex-shrink:0;
+}
+.card-type-tag.attack { background:rgba(239,68,68,0.2); color:#f87171; }
+.card-type-tag.skill { background:rgba(59,130,246,0.2); color:#60a5fa; }
+.card-type-tag.power { background:rgba(168,85,247,0.2); color:#c084fc; }
+
+.card-cost {
+  font-size:0.65rem; color:var(--text-dim); margin-left:auto;
+}
+.card-count {
+  font-size:0.6rem; padding:1px 5px; border-radius:6px;
+  background:rgba(255,255,255,0.08); color:var(--text-dim); flex-shrink:0;
+}
+.card-desc {
+  font-size:0.7rem; color:var(--text-dim); line-height:1.35;
+}
+
+/* Right sidebar */
+.right-sidebar {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.sidebar-section {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  padding:12px 14px;
+}
+.sidebar-section h4 {
+  font-size:0.8rem; font-weight:700; margin-bottom:8px;
+  padding-bottom:6px; border-bottom:1px solid var(--card-border);
+}
+
+.relic-item {
+  display:flex; align-items:flex-start; gap:6px;
+  margin-bottom:6px;
+}
+.relic-dot {
+  width:6px; height:6px; border-radius:50%; margin-top:5px; flex-shrink:0;
+}
+.relic-name { font-size:0.75rem; font-weight:600; }
+.relic-desc { font-size:0.68rem; color:var(--text-dim); }
+
+/* Startup flow */
+.startup-flow {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.flow-step {
+  display:flex; align-items:flex-start; gap:8px;
+}
+.flow-num {
+  width:20px; height:20px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.65rem; font-weight:700; flex-shrink:0;
+}
+.flow-text {
+  font-size:0.72rem; line-height:1.4;
+}
+
+/* Tips bar at bottom */
+.tips-bar {
+  margin-top:auto;
+  padding-top:8px;
+  border-top:1px solid var(--card-border);
+  display:flex; gap:16px; flex-wrap:wrap;
+  min-height:32px;
+}
+.tip-item {
+  font-size:0.7rem; color:var(--text-dim);
+  display:flex; align-items:center; gap:4px;
+}
+.tip-icon {
+  font-size:0.8rem;
+}
+
+/* ===== OVERVIEW TABLE SLIDE ===== */
+.overview-slide {
+  padding: 28px 40px;
+}
+.overview-slide h3 {
+  font-size:1.4rem; font-weight:900; margin-bottom:16px;
+}
+.overview-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.82rem;
+}
+.overview-table th {
+  text-align:left;
+  padding:10px 14px;
+  border-bottom:2px solid var(--card-border);
+  font-weight:700;
+  font-size:0.75rem;
+  color:var(--text-dim);
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.overview-table td {
+  padding:10px 14px;
+  border-bottom:1px solid var(--card-border);
+}
+.overview-table tr:hover td {
+  background:rgba(255,255,255,0.02);
+}
+
+/* Character cards on overview */
+.char-cards {
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:14px;
+  margin-bottom:20px;
+}
+.char-card {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  padding:16px;
+  text-align:center;
+}
+.char-card .char-icon {
+  width:48px; height:48px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; font-weight:900; margin:0 auto 8px;
+}
+.char-card h4 { font-size:0.95rem; font-weight:700; margin-bottom:4px; }
+.char-card .char-hp { font-size:0.75rem; color:var(--text-dim); margin-bottom:6px; }
+.char-card .char-relic { font-size:0.7rem; color:var(--text-dim); }
+.char-card .char-tag {
+  display:inline-block; padding:2px 10px; border-radius:10px;
+  font-size:0.65rem; font-weight:600; margin-top:6px;
+}
+
+/* Navigation */
+.nav-dots {
+  position:fixed; right:12px; top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; gap:4px; z-index:100;
+}
+.nav-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  cursor:pointer; border:none; padding:0;
+  transition: all 0.2s;
+}
+.nav-dot.active {
+  background:var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+.nav-dot:hover { background:rgba(255,255,255,0.4); }
+
+.progress-bar {
+  position:fixed; top:0; left:0; height:3px;
+  background: linear-gradient(90deg, #06b6d4, #a855f7);
+  z-index:200; transition: width 0.3s;
+}
+
+.slide-counter {
+  position:fixed; bottom:12px; right:16px;
+  font-size:0.7rem; color:var(--text-dim); z-index:100;
+}
+
+/* Color themes per character */
+.theme-ironclad { --theme: #ef4444; --theme-bg: rgba(239,68,68,0.1); }
+.theme-silent { --theme: #22c55e; --theme-bg: rgba(34,197,94,0.1); }
+.theme-watcher { --theme: #eab308; --theme-bg: rgba(234,179,8,0.1); }
+.theme-wraith { --theme: #a855f7; --theme-bg: rgba(168,85,247,0.1); }
+.theme-defect { --theme: #3b82f6; --theme-bg: rgba(59,130,246,0.1); }
+
+.theme-ironclad .arch-badge { background:var(--theme-bg); color:var(--red); border:1px solid rgba(239,68,68,0.3); }
+.theme-silent .arch-badge { background:var(--theme-bg); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
+.theme-watcher .arch-badge { background:var(--theme-bg); color:var(--yellow); border:1px solid rgba(234,179,8,0.3); }
+.theme-wraith .arch-badge { background:var(--theme-bg); color:var(--purple); border:1px solid rgba(168,85,247,0.3); }
+.theme-defect .arch-badge { background:var(--theme-bg); color:var(--blue); border:1px solid rgba(59,130,246,0.3); }
+
+.theme-ironclad .cards-section h4::before { background:var(--red); }
+.theme-silent .cards-section h4::before { background:var(--green); }
+.theme-watcher .cards-section h4::before { background:var(--yellow); }
+.theme-wraith .cards-section h4::before { background:var(--purple); }
+.theme-defect .cards-section h4::before { background:var(--blue); }
+
+.theme-ironclad .flow-num { background:var(--theme-bg); color:var(--red); }
+.theme-silent .flow-num { background:var(--theme-bg); color:var(--green); }
+.theme-watcher .flow-num { background:var(--theme-bg); color:var(--yellow); }
+.theme-wraith .flow-num { background:var(--theme-bg); color:var(--purple); }
+.theme-defect .flow-num { background:var(--theme-bg); color:var(--blue); }
+
+.theme-ironclad .relic-dot { background:var(--red); }
+.theme-silent .relic-dot { background:var(--green); }
+.theme-watcher .relic-dot { background:var(--yellow); }
+.theme-wraith .relic-dot { background:var(--purple); }
+.theme-defect .relic-dot { background:var(--blue); }
+
+.theme-ironclad .arch-header { border-bottom-color:rgba(239,68,68,0.2); }
+.theme-silent .arch-header { border-bottom-color:rgba(34,197,94,0.2); }
+.theme-watcher .arch-header { border-bottom-color:rgba(234,179,8,0.2); }
+.theme-wraith .arch-header { border-bottom-color:rgba(168,85,247,0.2); }
+.theme-defect .arch-header { border-bottom-color:rgba(59,130,246,0.2); }
+
+/* Rating stars */
+.rating { display:inline-flex; gap:2px; }
+.rating .star { color:var(--yellow); font-size:0.7rem; }
+.rating .star.empty { color:rgba(255,255,255,0.15); }
+
+/* Comparison table highlight */
+.highlight-row td { background:rgba(6,182,212,0.05) !important; }
+
+/* End slide */
+.end-slide {
+  justify-content:center; align-items:center; text-align:center;
+  background: radial-gradient(ellipse at 50% 40%, rgba(168,85,247,0.1) 0%, transparent 70%), var(--bg);
+}
+.end-slide h2 {
+  font-size:2.4rem; font-weight:900;
+  background: linear-gradient(135deg, #06b6d4, #a855f7);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom:12px;
+}
+.end-slide .end-sub { color:var(--text-dim); font-size:0.9rem; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="deck" id="deck">
+<div class="slide title-slide active">
+  <div style="font-size:0.85rem;color:var(--text-dim);letter-spacing:3px;margin-bottom:12px;">2026 年 3 月 · 抢先体验版</div>
+  <h1>《杀戮尖塔2》<br>五角色完整流派攻略</h1>
+  <div class="subtitle">涵盖战士、猎手、储君、亡灵契约师、故障机器人<br>全部主流流派的卡牌构筑、启动方式与遗物配置</div>
+  <div class="tags">
+    <span class="tag" style="background:rgba(239,68,68,0.15);color:#f87171;">战士 · 4 流派</span>
+    <span class="tag" style="background:rgba(34,197,94,0.15);color:#4ade80;">猎手 · 3 流派</span>
+    <span class="tag" style="background:rgba(234,179,8,0.15);color:#facc15;">储君 · 3 流派</span>
+    <span class="tag" style="background:rgba(168,85,247,0.15);color:#c084fc;">亡灵契约师 · 3 流派</span>
+    <span class="tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;">故障机器人 · 3 流派</span>
+  </div>
+</div>
+<div class="slide overview-slide">
+  <h3>五角色基础信息对比</h3>
+  <div class="char-cards">
+    <div class="char-card" style="border-color:rgba(239,68,68,0.2);">
+      <div class="char-icon" style="background:rgba(239,68,68,0.15);color:#f87171;">战</div>
+      <h4 style="color:#f87171;">战士</h4>
+      <div class="char-hp">HP 80 · 燃烧之血</div>
+      <div class="char-relic">战斗结束回复 6 血</div>
+      <div class="char-tag" style="background:rgba(239,68,68,0.15);color:#f87171;">新手首选</div>
+    </div>
+    <div class="char-card" style="border-color:rgba(34,197,94,0.2);">
+      <div class="char-icon" style="background:rgba(34,197,94,0.15);color:#4ade80;">猎</div>
+      <h4 style="color:#4ade80;">猎手</h4>
+      <div class="char-hp">HP 70 · 蛇之戒指</div>
+      <div class="char-relic">开局额外抽 2 牌</div>
+      <div class="char-tag" style="background:rgba(34,197,94,0.15);color:#4ade80;">操作上限高</div>
+    </div>
+    <div class="char-card" style="border-color:rgba(234,179,8,0.2);">
+      <div class="char-icon" style="background:rgba(234,179,8,0.15);color:#facc15;">储</div>
+      <h4 style="color:#facc15;">储君</h4>
+      <div class="char-hp">HP 80</div>
+      <div class="char-relic">轮椅卡众多，成型快</div>
+      <div class="char-tag" style="background:rgba(234,179,8,0.15);color:#facc15;">快速成型</div>
+    </div>
+    <div class="char-card" style="border-color:rgba(168,85,247,0.2);">
+      <div class="char-icon" style="background:rgba(168,85,247,0.15);color:#c084fc;">亡</div>
+      <h4 style="color:#c084fc;">亡灵契约师</h4>
+      <div class="char-hp">HP 75 · 灵魂系统</div>
+      <div class="char-relic">灵魂+召唤奥斯提</div>
+      <div class="char-tag" style="background:rgba(168,85,247,0.15);color:#c084fc;">新增职业</div>
+    </div>
+    <div class="char-card" style="border-color:rgba(59,130,246,0.2);">
+      <div class="char-icon" style="background:rgba(59,130,246,0.15);color:#60a5fa;">机</div>
+      <h4 style="color:#60a5fa;">故障机器人</h4>
+      <div class="char-hp">HP 75 · 破损核心</div>
+      <div class="char-relic">充能球系统</div>
+      <div class="char-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;">流派多样</div>
+    </div>
+  </div>
+  <table class="overview-table">
+    <tr><th>角色</th><th>推荐流派</th><th>启动速度</th><th>伤害上限</th><th>操作难度</th><th>遗物依赖</th><th>适合人群</th></tr>
+    <tr class="highlight-row"><td style="color:#f87171;font-weight:700;">战士</td><td>轮椅流</td><td>快</td><td>极高</td><td>极低</td><td>中</td><td>新手至高阶</td></tr>
+    <tr><td style="color:#4ade80;font-weight:700;">猎手</td><td>奇巧弃牌流</td><td>中</td><td>极高</td><td>高</td><td>极低</td><td>中阶至高阶</td></tr>
+    <tr><td style="color:#facc15;font-weight:700;">储君</td><td>辉星流</td><td>快</td><td>高</td><td>低</td><td>中</td><td>新手至高阶</td></tr>
+    <tr><td style="color:#c084fc;font-weight:700;">亡灵契约师</td><td>灵魂抽排流</td><td>慢</td><td>极高</td><td>中</td><td>低</td><td>中阶至高阶</td></tr>
+    <tr><td style="color:#60a5fa;font-weight:700;">故障机器人</td><td>利爪流</td><td>快</td><td>高</td><td>低</td><td>中</td><td>新手至高阶</td></tr>
+  </table>
+</div>
+<div class="slide chapter-slide" style="background:radial-gradient(ellipse at 50% 40%, rgba(239,68,68,0.08) 0%, transparent 70%), var(--bg);">
+  <div class="chapter-num" style="color:#f87171;">CHAPTER 01</div>
+  <h2 style="color:#f87171;">战士（铁甲战士）</h2>
+  <div class="chapter-sub">HP 80 · 燃烧之血 · 四大主流流派</div>
+  <div class="chapter-stats">
+    <div class="stat-box"><div class="stat-label">轮椅流</div><div class="stat-value" style="color:#f87171;">推荐首选</div></div>
+    <div class="stat-box"><div class="stat-label">力量流</div><div class="stat-value">经典直观</div></div>
+    <div class="stat-box"><div class="stat-label">格挡流</div><div class="stat-value">防守反击</div></div>
+    <div class="stat-box"><div class="stat-label">放血流</div><div class="stat-value">高阶挑战</div></div>
+  </div>
+</div>
+<div class="slide arch-slide theme-ironclad">
+  <div class="arch-header">
+    <span class="arch-badge">轮椅流</span>
+    <h3>轮椅流 — 当前版本最强</h3>
+    <span class="arch-desc">易伤叠层 → 力量转化 → 过牌永动 → 费用循环</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">主宰</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">将敌人易伤层数转化为等量力量，流派伤害发动机</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">凶恶</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">施加易伤并抽2牌，过牌永动启动器，必须保持2张</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">残酷</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">攻击伤害+50%，易伤叠满后一刀破千</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">放血</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;2-3</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">回费+过牌，费用循环体系的关键支撑</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">熔融之泉</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">将敌人易伤层数翻倍，力量瞬间上千</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">七零</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每层易伤额外+3伤害，斩杀补刀</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">连环拳</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">一卡两用，既叠易伤又输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">战力/挑衅</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">前期过渡牌，挂易伤保证生存</div>
+</div></div><h4>功能组合</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">被遗忘的仪式</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">提供回费，配合燃烧契约清除废牌</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">燃烧契约</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">快速清除卡组中的打击/防御等初始废牌</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>起手找凶恶</b>：挂易伤+抽2牌，快速过牌</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>主宰转力量</b>：易伤层数→等量力量</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>放血回费</b>：维持手牌和费用循环</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>熔融翻倍</b>：易伤翻倍，力量瞬间上千</div>
+</div><div class="flow-step">
+  <div class="flow-num">5</div>
+  <div class="flow-text"><b>残酷秒杀</b>：+50%伤害一刀结束</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">第一优先级，加速找到核心牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">删牌遗物</div><div class="relic-desc">第二优先级，清除废牌提升循环</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">增伤遗物</div><div class="relic-desc">第三优先级，锦上添花</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">📦</span>卡组 18-22 张，越精简越稳定</div><div class="tip-item"><span class="tip-icon">⚔️</span>多打架少问号，商店精英能贪就贪</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：低 | 操作难度：极低 | 伤害上限：极高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-ironclad">
+  <div class="arch-header">
+    <span class="arch-badge">力量流</span>
+    <h3>力量流 — 经典直观</h3>
+    <span class="arch-desc">叠满力量 → 多段攻击将力量加成最大化</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">恶魔形态</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">每回合被动获得力量，后期力量主要来源</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">旋风斩</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">X费</span>
+  </div>
+  <div class="card-desc">多段AoE，每段享受力量加成，核心输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">重锤</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">单次打出巨额伤害，单体斩杀利器</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">灵活出击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">低费力量叠加，前期过渡好用</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">预备打击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">力量叠加，前期过渡</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">燃烧</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">力量叠加来源之一</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">飞剑回旋镖</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">多段攻击，力量加成最大化</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">双重打击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">多段攻击，力量加成翻倍</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>前期叠力量</b>：灵活出击/预备打击低费叠力量</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>恶魔形态</b>：打出后每回合被动获得力量</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>多段攻击</b>：旋风斩/飞剑回旋镖最大化伤害</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>重锤收割</b>：单体Boss用重锤一击秒杀</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">锚</div><div class="relic-desc">战斗开始获得格挡，无需消耗卡牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">星系尘埃</div><div class="relic-desc">提供额外格挡来源，前期专注叠力量</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">翡翠之剑</div><div class="relic-desc">免费获得3点力量，简单高效</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">易伤相关遗物</div><div class="relic-desc">与高伤害力量流攻击搭配效果绝佳</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">💪</span>多段攻击是力量流最高效的输出手段</div><div class="tip-item"><span class="tip-icon">🛡️</span>优先拿免费格挡遗物，前期专注叠力量</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：中 | 操作难度：低 | 伤害上限：高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-ironclad">
+  <div class="arch-header">
+    <span class="arch-badge">格挡流</span>
+    <h3>格挡流 — 防守反击</h3>
+    <span class="arch-desc">壁垒保留格挡 → 全身撞击转化伤害</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">壁垒</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">格挡不清零，整个流派的基础，没有壁垒无法运转</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">全身撞击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">主要伤害来源，格挡值越高伤害越高</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">坚毅</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">格挡+过牌，全能型卡牌</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">火焰屏障</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">高格挡+反伤，对多段攻击敌人效果极佳</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">挑衅</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">为全身撞击提供易伤加成</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">岩石铠甲</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">被动格挡，持续积累</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">金属化</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每回合自动获得格挡，长期收益</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">铁浪</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">攻击+格挡，攻防一体的过渡牌</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>🎯 精英战策略</h5>
+  <p>壁垒上线后优先叠格挡到50+再用全身撞击输出。面对多段攻击精英时，火焰屏障反伤效果极佳，可优先打出。</p>
+</div><div class="strategy-box">
+  <h5>👹 Boss战策略</h5>
+  <p>Boss战前确保壁垒已打出。第一回合全力叠格挡，第二回合开始用全身撞击输出。格挡值100+时一击可打出100+伤害。</p>
+</div><div class="strategy-box">
+  <h5>📈 成长路线</h5>
+  <p>第一层优先找壁垒和全身撞击。第二层补充坚毅和火焰屏障。第三层可考虑混入力量卡提升全身撞击伤害上限。</p>
+</div><div class="strategy-box">
+  <h5>⚠️ 常见陷阱</h5>
+  <p>不要在没有壁垒的情况下拿全身撞击。不要过多拿攻击牌，格挡流的输出完全依赖格挡值转化。保持卡组精简。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>壁垒上线</b>：格挡不清零，开始积累</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>坚毅过牌</b>：格挡+过牌，维持手牌</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>格挡积累</b>：火焰屏障等持续叠格挡</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>全身撞击</b>：格挡值→伤害，一击致命</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">坚固钳子</div><div class="relic-desc">壁垒的优质平替，无需消耗能量，节省卡位</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">铜质鳞片</div><div class="relic-desc">荆棘效果，硬抗伤害时提供助力</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">岩石铠甲类遗物</div><div class="relic-desc">被动护甲，作用显著</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">壁垒3费较高，额外能量确保首回合打出</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">加速找到壁垒和全身撞击</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 壁垒+力量混搭：后期可混入恶魔形态，全身撞击享受力量加成<br>2. 格挡值管理：每回合先叠格挡再输出，保持格挡值持续增长<br>3. 坚毅是万金油：既提供格挡又过牌，永远不嫌多</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🛡️</span>壁垒是核心，没有壁垒流派无法运转</div><div class="tip-item"><span class="tip-icon">🔄</span>防守反击一体化，生存能力最强</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：中 | 操作难度：中 | 生存能力：高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-ironclad">
+  <div class="arch-header">
+    <span class="arch-badge">放血流</span>
+    <h3>放血流 — 高风险高回报</h3>
+    <span class="arch-desc">自伤换收益 → 将负面效果转化为力量</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">撕裂</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">快速叠加力量，是力量来源的核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">残暴</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">保证每回合触发自伤效果，维持循环</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">御血术</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">消耗1能量的强力攻击，带自伤效果</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">放血</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;2</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">自伤换费用，循环关键</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">祭品</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">自伤换收益，额外能量来源</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">狂宴</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">提升生命值上限，为打法提供更多容错</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">旋风斩</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">X费</span>
+  </div>
+  <div class="card-desc">多段攻击，与力量流共享的最优输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">飞剑回旋镖</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">多段攻击，力量加成最大化</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>❤️ 血量管理</h5>
+  <p>始终保持血量在30+以上。放血和祭品的自伤会累积，需要精确计算每回合的自伤量。燃烧之血每场回6血是核心保障。</p>
+</div><div class="strategy-box">
+  <h5>💥 爆发时机</h5>
+  <p>先用撒裂叠到足够力量，再用旋风斩一波带走。对付多敌人时旋风斩效果极佳，单体Boss用御血术+重锤。</p>
+</div><div class="strategy-box">
+  <h5>📊 风险评估</h5>
+  <p>每场战斗前评估自伤总量。如果当前血量低于40，考虑减少放血次数。店铺优先买血药。</p>
+</div><div class="strategy-box">
+  <h5>🔄 与力量流混搭</h5>
+  <p>放血流可与力量流共享多段攻击牌。撒裂叠力量+旋风斩多段输出，是两个流派的完美交集。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>撕裂叠力量</b>：自伤换力量，快速积累</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>残暴维持</b>：每回合触发自伤效果</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>放血回费</b>：自伤换费用维持循环</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>多段攻击</b>：旋风斩/御血术爆发输出</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">自成型黏土</div><div class="relic-desc">必备遗物，可多次叠加，缓解自伤血量压力</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">燃烧之血</div><div class="relic-desc">初始遗物，战斗结束回6血，放血流核心保障</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">生命值遗物</div><div class="relic-desc">第一优先，提升容错空间</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">增伤遗物</div><div class="relic-desc">第二优先，放大力量收益</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">血药类遗物</div><div class="relic-desc">战斗中回血，缓解自伤压力</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 放血时机：先放血回费，再用费用打攻击牌，最大化每回合输出<br>2. 祭品用法：在血量充足时使用，额外能量可打出更多牌<br>3. 狂宴的价值：提升血量上限=提升容错空间=更多放血次数</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">💉</span>操作难度最高、风险最大的流派</div><div class="tip-item"><span class="tip-icon">❤️</span>自成型黏clay是必备遗物，缓解自伤压力</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：高 | 操作难度：高 | 伤害上限：高</div>
+  </div>
+</div>
+<div class="slide chapter-slide" style="background:radial-gradient(ellipse at 50% 40%, rgba(34,197,94,0.08) 0%, transparent 70%), var(--bg);">
+  <div class="chapter-num" style="color:#4ade80;">CHAPTER 02</div>
+  <h2 style="color:#4ade80;">猎手（静默猎手）</h2>
+  <div class="chapter-sub">HP 70 · 蛇之戒指 · 三大主流流派</div>
+  <div class="chapter-stats">
+    <div class="stat-box"><div class="stat-label">飞刀流</div><div class="stat-value">快速爆发</div></div>
+    <div class="stat-box"><div class="stat-label">毒流</div><div class="stat-value">指数碾压</div></div>
+    <div class="stat-box"><div class="stat-label">奇巧弃牌流</div><div class="stat-value" style="color:#4ade80;">版本最强</div></div>
+  </div>
+</div>
+<div class="slide arch-slide theme-silent">
+  <div class="arch-header">
+    <span class="arch-badge">飞刀流</span>
+    <h3>飞刀流 — 快速爆发</h3>
+    <span class="arch-desc">大量生成飞刀 → 精准倍增伤害 → 一回合清场</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">刀扇</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">生成大量飞刀，群体AoE，见了就拿</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">精准</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;2-3</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">飞刀伤害加成核心，多张叠加不嫌多</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">无尽刀刃</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">生成飞刀，升级后开局直接出现在手牌</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">刀刃之舞</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">生成飞刀，稳定飞刀来源</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">群蛇形态</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">飞刀变AoE，前中期弥补精准不足</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">终结技</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">一次打出十几下，瞬间近百点伤害</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">残影</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">0费牌大量打出时叠极高防御，最强生存卡</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">斗篷与匕首</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">生成飞刀+格挡，攻防兼备</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>起手找刀扇/精准</b>：其中一张出现即可推进</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>刀扇生成飞刀</b>：大量飞刀铺场</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>精准倍增</b>：飞刀伤害大幅提升</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>群蛇AoE</b>：飞刀变群体清场</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">忍术卷轴</div><div class="relic-desc">飞刀流优质开局遗物</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">手里剑</div><div class="relic-desc">狂扔飞刀时效果极佳</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">苦无</div><div class="relic-desc">配合飞刀体系增伤</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">精致折扇</div><div class="relic-desc">打着打着就有二十多点格挡</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">赌博筹码</div><div class="relic-desc">起手洗牌加速成型</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🔪</span>比其他流派更依赖遗物，发育周期较长</div><div class="tip-item"><span class="tip-icon">📦</span>卡组控制在 20 张以内</div><div class="tip-item"><span class="tip-icon">🎯</span>启动速度：快 | 遗物依赖：高 | 操作难度：低</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-silent">
+  <div class="arch-header">
+    <span class="arch-badge">毒流</span>
+    <h3>毒流 — 指数碾压</h3>
+    <span class="arch-desc">叠中毒层数 → 触媒指数爆发 → 持续碾压</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">致命毒药</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;2-3</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">快速叠中毒层数，毒流核心叠毒手段</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">触媒</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">让中毒伤害暴增，指数级暴涨，流派核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">腐蚀波</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每抽一牌对全部敌人施加3毒，成型核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">下注</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">配合腐蚀波成型，对遗物完全无要求</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">带毒刺击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">攻击同时叠中毒</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">毒雾</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">对全部敌人施加中毒</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">气泡</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">敌人有毒则施加9毒，中期爆发利器</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">加速剂</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">毒被触发额外1次，大幅提升毒伤</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">幻影</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">获得格挡等于敌人毒层数，兼顾防御</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>☠️ 叠毒节奏</h5>
+  <p>前2回合专注叠毒，不要急于输出。腐蚀波上线后每次抽牌自动叠3毒，配合过牌一回合可叠20+毒。触媒打出后毒层数翻倍。</p>
+</div><div class="strategy-box">
+  <h5>🛡️ 生存策略</h5>
+  <p>前期最脆弱，防御优先级远高于其他流派。幻影是核心防御手段，敌人毒层数越高格挡越多，后期可达50+格挡。</p>
+</div><div class="strategy-box">
+  <h5>📈 成型路线</h5>
+  <p>第一层抓致命毒药+带毒刺击。第二层找腐蚀波+触媒。第三层补充加速剂和幻影。成型后可轻松挑战精英。</p>
+</div><div class="strategy-box">
+  <h5>🎯 精英战要点</h5>
+  <p>对付单体精英时触媒效果最佳。对付多敌人时腐蚀波+毒雾可同时叠毒。注意毒流伤害是回合开始时触发，需要撑过一回合。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>叠毒期</b>：致命毒药+带毒刺击快速叠毒</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>腐蚀波</b>：每抽牌自动施加3毒</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>触媒爆发</b>：中毒层数指数级暴涨</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>持续碾压</b>：每回合毒伤秒杀敌人</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">异蛇头骨</div><div class="relic-desc">让叠毒更轻松，毒流首选遗物</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">毒素瓶</div><div class="relic-desc">增强中毒效果</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">防御类遗物</div><div class="relic-desc">弥补前期生存能力不足的缺陷</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">配合腐蚀波，抽牌越多叠毒越快</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">赌博筹码</div><div class="relic-desc">起手洗牌找腐蚀波，加速成型</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 触媒时机：叠毒到30+后再打触媒，效果最大化<br>2. 腐蚀波配合：配合大量过牌卡可一回合叠20+毒<br>3. 毒流转型：前期可用飞刀流过渡，中期转毒流</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">☠️</span>成型门槛极低：腐蚀波+下注即可成型</div><div class="tip-item"><span class="tip-icon">🛡️</span>前期最脆弱，防御优先级远高于其他流派</div><div class="tip-item"><span class="tip-icon">🎯</span>启动速度：慢 | 遗物依赖：极低 | 操作难度：中</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-silent">
+  <div class="arch-header">
+    <span class="arch-badge">奇巧弃牌流</span>
+    <h3>奇巧弃牌流 — 当前版本最强</h3>
+    <span class="arch-desc">谋划专家 → 无限抽弃循环 → 一回合秒杀</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>必带核心（缺一不可）</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">谋划专家</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">流派灵魂，使用过的技能永久获得奇巧（0费）</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">战术大师</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">被弃时回2费，循环的能量来源，主核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">早有准备</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;2</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费抽2丢2，无限循环关键润滑剂</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">杂技</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;2-3</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费抽3/4弃1，核心过牌引擎</div>
+</div></div><h4>输出终端</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">精密瞄准</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;2-3</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">使用技能时0费，循环中反复打出，主要输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">速行者</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">循环中AoE爆炸伤害，可炸200-300点</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">谋杀</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">本场伤害抽1牌+1伤，后期每次60-100点</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">袖里乾坤</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">0费生成4把小刀，配合奇巧无限打出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">斗篷与短刀</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每回合免费生成小刀，循环中自动输出</div>
+</div></div><h4>生存/润滑</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">残影</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">猎手最强生存卡，防止暴毙</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">爆发</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">锁死循环，让0费技能无限打出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">后空翻</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;0-1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">0费抽1丢1，微调牌序找核心</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>找谋划专家</b>：流派发动机，必拿必留</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>建立循环</b>：杂技抽牌→弃战术大师回2费→净赚1费</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>早有准备</b>：0费抽2丢2，不断重复循环</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>抽穿牌库</b>：精密瞄准+速行者指数增长秒杀</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>遗物与能力</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">对遗物无硬性要求</div><div class="relic-desc">只要凑齐核心卡组件即可成型</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌类遗物</div><div class="relic-desc">加速找到核心牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量类遗物</div><div class="relic-desc">防止循环断档</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">⚡</span>成型前超级痛苦，前期不碰精英</div><div class="tip-item"><span class="tip-icon">📦</span>卡组 18-22 张，剩余牌压在 9 张以内</div><div class="tip-item"><span class="tip-icon">🎯</span>成型后稳定打到 8 级难度，首战即终战</div>
+  </div>
+</div>
+<div class="slide chapter-slide" style="background:radial-gradient(ellipse at 50% 40%, rgba(234,179,8,0.08) 0%, transparent 70%), var(--bg);">
+  <div class="chapter-num" style="color:#facc15;">CHAPTER 03</div>
+  <h2 style="color:#facc15;">储君</h2>
+  <div class="chapter-sub">HP 80 · 轮椅卡众多 · 三大主流流派</div>
+  <div class="chapter-stats">
+    <div class="stat-box"><div class="stat-label">辉星流</div><div class="stat-value" style="color:#facc15;">推荐首选</div></div>
+    <div class="stat-box"><div class="stat-label">铸剑流</div><div class="stat-value">爆发流派</div></div>
+    <div class="stat-box"><div class="stat-label">王者踢流</div><div class="stat-value">高阶挑战</div></div>
+  </div>
+</div>
+<div class="slide arch-slide theme-watcher">
+  <div class="arch-header">
+    <span class="arch-badge">辉星流</span>
+    <h3>辉星流 — 稳定容错</h3>
+    <span class="arch-desc">辉光/倒映产星 → 辐射转化伤害 → 攻防一体</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>必抓卡牌（见了就拿）</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">辉光</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1+星1费</span>
+  </div>
+  <div class="card-desc">1费2星抽2，过牌产星两手抓，流派底层逻辑</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">倒映</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1+星3费</span>
+  </div>
+  <div class="card-desc">1费3星挡17，反弹伤害，前期防御核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">群星之子</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">唯一能用的能力防，启动后攻防一体</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">辐射</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">0+星1费</span>
+  </div>
+  <div class="card-desc">星星流主力输出，段数好刷，见了就拿</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">光子切割</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">升级后1费打13抽2回1，超级过渡</div>
+</div></div><h4>优质过渡 & 高阶补充</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">伽马爆破</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0+星3费</span>
+  </div>
+  <div class="card-desc">0费3星打13上双buff，数值极高</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">新月长矛</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1+星1费</span>
+  </div>
+  <div class="card-desc">扎实过渡输出，成长性好</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">隐秘藏品</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1+星1费</span>
+  </div>
+  <div class="card-desc">配合辐射启动，不要抓太多</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">微光</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费抽3回1，过牌手段充足可不抓</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">下砸</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">优质过渡AoE，帮助清场</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">明耀打击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1+星2费</span>
+  </div>
+  <div class="card-desc">每回合稳定星星来源</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>辉光产星</b>：产星+过牌，流派基础</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>倒映防御</b>：防御+反弹伤害</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>辐射输出</b>：星星转化为伤害</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>伽马溢出</b>：0费高数值爆发</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">群星之力</div><div class="relic-desc">星星产出+1，直接强化流派核心</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">锋利附魔</div><div class="relic-desc">配合辐射增伤，优先级极高</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">活力</div><div class="relic-desc">与辐射配合进一步扩大输出</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">地形改造</div><div class="relic-desc">增加过牌手段，加速成型</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">赌博筹码</div><div class="relic-desc">起手洗牌找核心，加速成型</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">⭐</span>卡组 18-22 张，精简提升核心牌出现率</div><div class="tip-item"><span class="tip-icon">🛡️</span>前期防御卡优先级高于输出卡</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：低 | 操作难度：低 | 伤害上限：高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-watcher">
+  <div class="arch-header">
+    <span class="arch-badge">铸剑流</span>
+    <h3>铸剑流 — 爆发流派</h3>
+    <span class="arch-desc">大爆炸生成剑 → 强化剑伤害 → 一回合秒杀</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">大爆炸</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">0+星1费</span>
+  </div>
+  <div class="card-desc">给星给费还敲固有，启动卡中的启动卡，无脑抓</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">既定事项</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">锦上添花的启动牌，成型或过牌紧缺后可抓</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">星灭</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1+星3费</span>
+  </div>
+  <div class="card-desc">带伤害的尖啸，防牌不足时可抓</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">七星</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2+星7费</span>
+  </div>
+  <div class="card-desc">7费7星打伤害，AoE秒杀群怪</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">轰击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">爆发伤害，但容易卡手</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">所向无敌</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">优质防牌，与光子切割配合好</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">创世纪</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">启动牌，长盘作战续航保障</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">铸剑者</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1+星4费</span>
+  </div>
+  <div class="card-desc">铸剑流核心，生成大量剑</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>大爆炸积累</b>：生成大量剑，积累资源</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>防御撑血</b>：靠防御卡撑住血量</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>七星/轰击</b>：剑积累到位后一波秒杀</div>
+</div></div></div><div class="sidebar-section"><h4>关键提示</h4><div style="font-size:0.75rem;color:var(--text-dim);line-height:1.5;">铸剑流可作为辉星流的外挂使用，在辉星流基础上加1-2张铸剑卡作为爆发组件。</div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">星星产出类遗物</div><div class="relic-desc">与辉星流类似，强化星星产出</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">防御类遗物</div><div class="relic-desc">弥补铸剑流前期脆弱</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">加速找到核心组件</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">⚔️</span>可与辉星流混搭，灵活性高</div><div class="tip-item"><span class="tip-icon">💥</span>伤害上限极高，但启动难度较大</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：中 | 操作难度：中 | 伤害上限：极高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-watcher">
+  <div class="arch-header">
+    <span class="arch-badge">王者踢流</span>
+    <h3>王者踢流 — 高阶挑战</h3>
+    <span class="arch-desc">大量删牌压缩 → 极致精简 → 无限循环秒杀</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">王者之踢</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">4费</span>
+  </div>
+  <div class="card-desc">高费高伤害，压缩卡组后无限循环</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">王者之拳</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">低费输出，配合删牌压缩</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">冲锋！！</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">烧牌工具，处理状态牌和诅咒</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">辉光</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1+星1费</span>
+  </div>
+  <div class="card-desc">过牌产星，流派基础</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">倒映</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1+星3费</span>
+  </div>
+  <div class="card-desc">防御+反弹，前期核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">群星之子</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">攻防一体，能力防御</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>✂️ 删牌策略</h5>
+  <p>压缩卡组到极致是核心。商店删牌优先于买牌，营火处优先删牌而非升级。目标卡组压到仅剩6-8张核心牌。</p>
+</div><div class="strategy-box">
+  <h5>🔄 无限循环条件</h5>
+  <p>卡组压缩到6-8张后，王者之踢可每回合打出多次。配合辉光过牌产星，实现一回合无限循环秒杀。</p>
+</div><div class="strategy-box">
+  <h5>📊 成型路线</h5>
+  <p>第一层拿辉光+倒映保命，同时大量删牌。第二层找王者之踢，继续删牌。第三层完成压缩，开始无限循环。</p>
+</div><div class="strategy-box">
+  <h5>⚠️ 常见陷阱</h5>
+  <p>不要拿太多牌，每拿一张牌就意味着要多删一张。冲锋！！用于烧掉状态牌和诅咒，不要浪费在正常牌上。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>大量删牌</b>：商店/营火处删除低效牌</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>压缩卡组</b>：只保留核心攻防牌</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>无限循环</b>：卡组极致精简后实现循环</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>一回合秒杀</b>：王者之踢反复打出</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">删牌类遗物</div><div class="relic-desc">第一优先级，压缩卡组到极致</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">加速循环，确保每回合能抽到核心牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">支撑王者之踢4费的高消耗</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">赌博筹码</div><div class="relic-desc">起手洗牌找核心牌，小卡组效果极佳</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 理想卡组结构：王者之踢x2 + 辉光x1 + 倒映x1 + 群星之子x1<br>2. 前期生存：删牌期间用辉光+倒映维持基本攻防<br>3. 营火选择：始终优先删牌，其次才是升级和休息</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🎓</span>仅推荐高阶玩家，需要极强删牌能力+卡池配合</div><div class="tip-item"><span class="tip-icon">✂️</span>删牌优先级高于一切</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：高 | 操作难度：高 | 伤害上限：高</div>
+  </div>
+</div>
+<div class="slide chapter-slide" style="background:radial-gradient(ellipse at 50% 40%, rgba(168,85,247,0.08) 0%, transparent 70%), var(--bg);">
+  <div class="chapter-num" style="color:#c084fc;">CHAPTER 04</div>
+  <h2 style="color:#c084fc;">亡灵契约师</h2>
+  <div class="chapter-sub">HP 75 · 灵魂系统 · 召唤奥斯提 · 三大主流流派</div>
+  <div class="chapter-stats">
+    <div class="stat-box"><div class="stat-label">灵魂抽排流</div><div class="stat-value" style="color:#c084fc;">版本最强</div></div>
+    <div class="stat-box"><div class="stat-label">虚无流</div><div class="stat-value">过渡流派</div></div>
+    <div class="stat-box"><div class="stat-label">召唤流</div><div class="stat-value">稳定通关</div></div>
+  </div>
+</div>
+<div class="slide arch-slide theme-wraith">
+  <div class="arch-header">
+    <span class="arch-badge">灵魂抽排流</span>
+    <h3>灵魂抽排流 — 版本最强</h3>
+    <span class="arch-desc">唤起获能量 → 挽歌+重构无限循环 → 纠缠指数输出</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>必带核心（缺一不可）</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">重构</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">流派灵魂，让卡牌重放（打两次），与挽歌配合无敌</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">挽歌</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">X费</span>
+  </div>
+  <div class="card-desc">X消耗卡，重构后X打两次，核心输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">唤起</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费变2-3能量，灵魂充足时无限打出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">鬼火</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">升级后有保留效果，能量来源</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">预借时间</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">不消耗的能量，灵魂充足时实时打出</div>
+</div></div><h4>输出终端</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">纠缠</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">最重要输出手段，灵魂充足时自动触发</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">亡灵精通</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">纠缠备案，让奥斯提被打反弹伤害</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">致死性</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">单纯增加输出，备案选项</div>
+</div></div><h4>前期过渡</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">重压</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">攻击后获得免费2费输出卡，前期过渡</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">取回</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">配合重压，白嫖攻击技能</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">玷污</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费两倍攻击力输出，虚无可压缩牌库</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">播种</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">前期AoE清场关键</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">守墓人</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费护盾8+放入灵魂，拖时间关键</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>前期活下来</b>：重压/取回/玷污撑血量</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>唤起获能量</b>：鬼火+预借时间补充</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>挽歌+重构</b>：无限循环成型</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>纠缠输出</b>：指数级伤害增长</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">灵魂容器</div><div class="relic-desc">灵魂产出+1，直接强化流派核心</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌类遗物</div><div class="relic-desc">加速找到核心牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量类遗物</div><div class="relic-desc">防止循环断档</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">防御类遗物</div><div class="relic-desc">弥补前期脆弱</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">👻</span>成型前超级痛苦，前期不碰精英</div><div class="tip-item"><span class="tip-icon">📦</span>卡组 18-22 张，对遗物无硬性要求</div><div class="tip-item"><span class="tip-icon">⚠️</span>精神过载有死亡风险，建议30血以上施放</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-wraith">
+  <div class="arch-header">
+    <span class="arch-badge">虚无流</span>
+    <h3>虚无流 — 过渡流派</h3>
+    <span class="arch-desc">虚无词缀压缩卡组 → 前期度过难关 → 后期转型</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">虚无词缀卡牌</span>
+    <span class="card-type-tag skill">—</span>
+    <span class="card-count">&times;多</span>
+    <span class="card-cost">—费</span>
+  </div>
+  <div class="card-desc">带虚无词缀的卡牌打出后不消耗，保留在手牌中</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">玷污</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费两倍攻击力，虚无词缀可压缩牌库</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">播种</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">前期AoE清场，可保留压缩牌库</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">基础输出卡</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;适量</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">维持基础伤害输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">基础防御卡</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;适量</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">维持基础防御</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>🌀 虚无机制详解</h5>
+  <p>虚无词缀卡牌打出后不进入弃牌堆，而是直接消失。这意味着牌库会自动压缩，每回合能抽到核心牌的概率越来越高。</p>
+</div><div class="strategy-box">
+  <h5>🔄 转型时机</h5>
+  <p>当牌库压缩到10张以下时，开始考虑转型。如果找到重构+挝歌，转灵魂流；如果找到亡灵精通，转召唤流。</p>
+</div><div class="strategy-box">
+  <h5>🛡️ 前期生存</h5>
+  <p>虚无流前期伤害较低，优先拿防御牌。玩污的虚无版本可提供不错的输出，同时自动压缩牌库。</p>
+</div><div class="strategy-box">
+  <h5>🎯 适用场景</h5>
+  <p>虚无流是亡灵契约师的安全过渡方案。当前期没有找到灵魂流或召唤流核心牌时，用虚无流先活下来再说。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>抓虚无卡</b>：优先抓取带虚无词缀的卡牌</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>压缩牌库</b>：虚无卡打出后自动消失</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>稳定输出</b>：每回合打出高效卡牌组合</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>后期转型</b>：转向灵魂流或召唤流</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">对遗物完全无要求</div><div class="relic-desc">纯靠卡牌搭配就能成型</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">防御类遗物</div><div class="relic-desc">弥补前期脆弱，提升容错</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">加速找到核心牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">多打牌=多压缩，加速转型</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">灵魂容器</div><div class="relic-desc">为后期转型灵魂流提前储备</div></div>
+</div></div><div class="sidebar-section"><h4>转型指南</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;"><b>转灵魂流：</b>找到重构+挝歌后立即转型，虚无压缩的牌库让循环更容易<br><b>转召唤流：</b>找到亡灵精通+出击后转型，虚无牌库精简后每回合能稳定抽到核心牌</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🌀</span>过渡流派，前期用来度过难关</div><div class="tip-item"><span class="tip-icon">🔄</span>后期可转向灵魂流或召唤流</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：低 | 操作难度：低 | 伤害上限：中</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-wraith">
+  <div class="arch-header">
+    <span class="arch-badge">召唤流</span>
+    <h3>召唤流 — 稳定通关</h3>
+    <span class="arch-desc">增加奥斯提血量 → 亡灵精通反弹伤害 → 出击终结</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">亡灵精通</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">让奥斯提被打时反弹伤害，核心输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">出击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">造成等同于奥斯提当前生命的伤害，终结技</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">守墓人</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">1费护盾8+放入灵魂，保护奥斯提</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">护卫</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">保护奥斯提，增加生存能力</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">哨卫模式</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">增强奥斯提的防御能力</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">吸引仇恨</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">让奥斯提吸收伤害</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">友谊</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增强奥斯提的血量和能力</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">增生</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增加奥斯提血量</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>🤚 奥斯提管理</h5>
+  <p>奥斯提是召唤流的核心。优先用增生/友谊提升其血量，再用护卫保护它不被秒杀。奥斯提血量越高，出击伤害越高。</p>
+</div><div class="strategy-box">
+  <h5>🛡️ 双线防御</h5>
+  <p>召唤流需要同时保护自身和奥斯提。守墓人可同时给自己护盾和放入灵魂，是最高效的防御手段。</p>
+</div><div class="strategy-box">
+  <h5>📊 成型路线</h5>
+  <p>第一层拿守墓人+护卫保命。第二层找亡灵精通+出击。第三层补充增生/友谊提升奥斯提血量。</p>
+</div><div class="strategy-box">
+  <h5>⚠️ Boss战要点</h5>
+  <p>Boss战前确保奥斯提血量充足。亡灵精通让Boss打奥斯提时反弹伤害，同时用出击打出等同奥斯提血量的伤害。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>增加奥斯提血量</b>：增生/友谊提升血量</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>亡灵精通</b>：奥斯提被打时反弹伤害</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>护卫保护</b>：保护奥斯提不被秒杀</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>出击终结</b>：造成等同奥斯提血量的伤害</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">防御类遗物</div><div class="relic-desc">保护奥斯提和自身</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">生命值遗物</div><div class="relic-desc">提升容错空间</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">加速找到核心牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">灵魂容器</div><div class="relic-desc">灵魂产出+1，支撑护卫和守墓人</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">多打护卫和增生，加速奥斯提成长</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 哨卫模式时机：奥斯提血量达到20+后再打出，效果最大化<br>2. 吸引仇恨用法：配合亡灵精通，让奥斯提主动吸收伤害并反弹<br>3. 出击时机：奥斯提血量越高伤害越高，先叠血再出击</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🤚</span>围绕奥斯提（大手）展开，生存能力最强</div><div class="tip-item"><span class="tip-icon">🛡️</span>伤害输出相对较低，适合稳定通关</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：中 | 操作难度：中 | 生存能力：高</div>
+  </div>
+</div>
+<div class="slide chapter-slide" style="background:radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.08) 0%, transparent 70%), var(--bg);">
+  <div class="chapter-num" style="color:#60a5fa;">CHAPTER 05</div>
+  <h2 style="color:#60a5fa;">故障机器人</h2>
+  <div class="chapter-sub">HP 75 · 破损核心 · 充能球系统 · 三大主流流派</div>
+  <div class="chapter-stats">
+    <div class="stat-box"><div class="stat-label">利爪流</div><div class="stat-value" style="color:#60a5fa;">最稳定</div></div>
+    <div class="stat-box"><div class="stat-label">充能球流</div><div class="stat-value">均衡全面</div></div>
+    <div class="stat-box"><div class="stat-label">无限能力流</div><div class="stat-value">高阶挑战</div></div>
+  </div>
+</div>
+<div class="slide arch-slide theme-defect">
+  <div class="arch-header">
+    <span class="arch-badge">利爪流</span>
+    <h3>利爪流 — 最稳定</h3>
+    <span class="arch-desc">大量0费攻击牌 → 爪击伤害全局累加 → 无限循环</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">爪击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;2-3</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费攻击，每次使用全局爪击伤害+2，越打越疼</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">光束射线</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费攻击，配合爪击体系</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">螺旋钻击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费攻击，多段打出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">超越光速</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费攻击，抽牌+回费</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">内核加速</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费技能，抽2牌，过牌核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">高速脱离</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费格挡，配合0费体系</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">启动流程</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费技能，抽牌+回费</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">热修复</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">0费</span>
+  </div>
+  <div class="card-desc">0费技能，格挡+过牌</div>
+</div></div><h4>增强组件</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">化废为宝</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每打出0费牌获得格挡，攻防一体</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">旋转工艺</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每打出0费牌获得充能球</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">碎片整理</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每打出0费牌抽1牌，过牌永动</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">回响形态</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">每打出攻击牌复制一张到手牌，后期无限循环</div>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>收集0费牌</b>：爪击/光束射线/内核加速</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>化废为宝</b>：每打0费牌获得格挡</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>碎片整理</b>：每打0费牌抽1牌，永动</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>爪击循环</b>：伤害越来越高，一回合清场</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌类遗物</div><div class="relic-desc">第一优先级，加速找到爪击和0费牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">充能球遗物</div><div class="relic-desc">第二优先级，提供额外收益</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">第三优先级，支撑能力牌打出</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">手里剑/苦无</div><div class="relic-desc">0费牌大量打出时效果极佳</div></div>
+</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🦀</span>爪击伤害全局累加，打得越多越疼</div><div class="tip-item"><span class="tip-icon">📦</span>卡组控制在 20 张以内，0费牌占比要高</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：低 | 操作难度：低 | 伤害上限：高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-defect">
+  <div class="arch-header">
+    <span class="arch-badge">充能球流</span>
+    <h3>充能球流 — 均衡全面</h3>
+    <span class="arch-desc">生成充能球 → 扩容槽位 → 循环触发获得均衡收益</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">球状闪电</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">攻击+生成闪电球，基础输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">冷静头脑</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1-2</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">格挡+生成冰霜球，基础防御</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">电击</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">生成闪电球，稳定输出来源</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">冰川</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">生成3个冰霜球，大量格挡</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">双重释放</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">触发首个充能球2次，爆发核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">多重释放</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">X费</span>
+  </div>
+  <div class="card-desc">触发首个充能球X+1次，终极爆发</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">彩虹</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">生成闪电+冰霜+暗能量球，全能</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">聚变</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">回合开始时触发所有充能球</div>
+</div></div><h4>增强组件</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">扩容</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增加充能球槽位，核心能力</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">循环</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">触发首个充能球，持续收益</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">冷却剂</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增强冰霜球效果</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">雷暴</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增强闪电球效果</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>⚡ 充能球类型选择</h5>
+  <p>闪电球=输出，冰霜球=防御，暗能量球=终极输出。前期以闪电+冰霜混合为主，后期转向暗能量球爆发。</p>
+</div><div class="strategy-box">
+  <h5>🔮 槽位管理</h5>
+  <p>扩容是第一优先级。每多一个槽位就多一份被动收益。槽位达到5+后，循环触发的收益非常可观。</p>
+</div><div class="strategy-box">
+  <h5>📊 成型路线</h5>
+  <p>第一层拿球状闪电+冷静头脑。第二层找扩容+循环。第三层补充双重/多重释放作为爆发终端。</p>
+</div><div class="strategy-box">
+  <h5>🛡️ 生存优势</h5>
+  <p>充能球流生存能力最强。冰霜球每回合提供被动格挡，配合冷却剂增强后，每回合可获得30+格挡。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>生成充能球</b>：球状闪电/冷静头脑铺场</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>扩容槽位</b>：增加充能球上限</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>循环触发</b>：持续触发充能球效果</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>双重/多重释放</b>：爆发输出</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">充能球槽位遗物</div><div class="relic-desc">第一优先级，更多球=更多收益</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">集中力遗物</div><div class="relic-desc">增强每个充能球的效果</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">防御类遗物</div><div class="relic-desc">弥补前期生存不足</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">支撑冰川/彩虹等高费卡牌</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">加速找到双重/多重释放</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 双重释放用法：对暗能量球使用效果最佳，一次可打出100+伤害<br>2. 冰霜球策略：对付高伤害Boss时全铺冰霜球，硬抗伤害<br>3. 彩虹的价值：一张牌生成3种球，性价比极高</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">⚡</span>闪电球=输出，冰霜球=防御，暗能量球=终极输出</div><div class="tip-item"><span class="tip-icon">🔮</span>充能球槽位越多越强，优先扩容</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：中 | 操作难度：中 | 生存能力：高</div>
+  </div>
+</div>
+<div class="slide arch-slide theme-defect">
+  <div class="arch-header">
+    <span class="arch-badge">无限能力流</span>
+    <h3>无限能力流 — 高阶挑战</h3>
+    <span class="arch-desc">创造性AI生成能力 → 堆叠增益 → 多重释放终极爆发</span>
+  </div>
+  <div class="arch-body">
+    <div class="cards-section">
+      <h4>核心卡牌</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">创造性AI</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">每回合生成一张随机能力牌到手中，流派发动机</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">机器学习</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每回合抽1额外牌，过牌核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">回响形态</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">3费</span>
+  </div>
+  <div class="card-desc">攻击牌复制，后期无限输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">缓冲</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">防止一次致命伤害，保命核心</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">吞噬暗影</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">增强暗能量球效果</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">冷却剂</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增强冰霜球效果</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">雷暴</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">增强闪电球效果</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">碎片整理</span>
+    <span class="card-type-tag power">能力</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">1费</span>
+  </div>
+  <div class="card-desc">每打出0费牌抽1牌</div>
+</div></div><h4>输出终端</h4><div class="cards-grid"><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">多重释放</span>
+    <span class="card-type-tag skill">技能</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">X费</span>
+  </div>
+  <div class="card-desc">触发首个充能球X+1次，终极爆发</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">超能光束</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">2费</span>
+  </div>
+  <div class="card-desc">高伤害输出</div>
+</div><div class="card-item">
+  <div class="card-top">
+    <span class="card-name">陨石打击</span>
+    <span class="card-type-tag attack">攻击</span>
+    <span class="card-count">&times;1</span>
+    <span class="card-cost">5费</span>
+  </div>
+  <div class="card-desc">单次超高伤害，终极斩杀</div>
+</div></div><h4>对局策略</h4><div class="strategy-section"><div class="strategy-box">
+  <h5>🧠 能力堆叠策略</h5>
+  <p>前期专注打出能力牌，不要急于输出。创造性AI越早打出越好，每回合免费获得能力牌，滚雪球效应极强。</p>
+</div><div class="strategy-box">
+  <h5>⚠️ 前期生存</h5>
+  <p>能力流前期极度脆弱，缓冲是救命稻草。前2层尽量走安全路线，避开精英，专注堆叠能力。</p>
+</div><div class="strategy-box">
+  <h5>📊 成型路线</h5>
+  <p>第一层找创造性AI+机器学习。第二层补充缓冲+各种增强能力。第三层加入回响形态，开始无限输出。</p>
+</div><div class="strategy-box">
+  <h5>💥 爆发时机</h5>
+  <p>能力堆叠到5+张后，回响形态打出。每次攻击都会复制，配合多重释放可一回合打出数百点伤害。</p>
+</div></div>
+    </div>
+    <div class="right-sidebar">
+      <div class="sidebar-section"><h4>启动流程</h4><div class="startup-flow"><div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><b>创造性AI</b>：每回合免费获得能力牌</div>
+</div><div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text"><b>堆叠能力</b>：机器学习/冷却剂/雷暴</div>
+</div><div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text"><b>回响形态</b>：攻击牌无限复制</div>
+</div><div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text"><b>多重释放</b>：终极爆发秒杀</div>
+</div></div></div>
+      <div class="sidebar-section"><h4>推荐遗物</h4><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">能量遗物</div><div class="relic-desc">第一优先级，能力牌费用普遍较高</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">充能球遗物</div><div class="relic-desc">第二优先级，增强被动收益</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">过牌遗物</div><div class="relic-desc">第三优先级，加速找到核心能力</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">缓冲遗物</div><div class="relic-desc">防止一次致命伤害，保命核心</div></div>
+</div><div class="relic-item">
+  <div class="relic-dot"></div>
+  <div><div class="relic-name">手里剑/苦无</div><div class="relic-desc">配合大量能力牌打出时效果极佳</div></div>
+</div></div><div class="sidebar-section"><h4>进阶技巧</h4><div style="font-size:0.72rem;color:var(--text-dim);line-height:1.5;">1. 创造性AI时机：越早打出越好，每回合免费获得能力牌<br>2. 缓冲的价值：能力流前期极脆，缓冲可救命<br>3. 回响形态：打出后每次攻击都会复制，后期无限输出</div></div>
+    </div>
+  </div>
+  <div class="tips-bar">
+    <div class="tip-item"><span class="tip-icon">🧠</span>前期极度依赖能量，优先拿能量遗物</div><div class="tip-item"><span class="tip-icon">⚙️</span>能力牌堆叠越多越强，滚雪球效应</div><div class="tip-item"><span class="tip-icon">🎯</span>成型难度：高 | 操作难度：高 | 伤害上限：高</div>
+  </div>
+</div>
+<div class="slide overview-slide">
+  <h3 style="margin-bottom:12px;">全流派横向对比总表</h3>
+  <table class="overview-table">
+    <tr><th>角色</th><th>流派</th><th>核心机制</th><th>成型难度</th><th>操作难度</th><th>伤害上限</th><th>生存能力</th></tr>
+    <tr class="highlight-row"><td style="color:#f87171;font-weight:700;">战士</td><td>轮椅流</td><td>易伤→力量→过牌永动</td><td>低</td><td>极低</td><td>极高</td><td>中</td></tr>
+    <tr><td style="color:#f87171;">战士</td><td>力量流</td><td>叠力量→多段攻击</td><td>中</td><td>低</td><td>高</td><td>中</td></tr>
+    <tr><td style="color:#f87171;">战士</td><td>格挡流</td><td>壁垒→全身撞击</td><td>中</td><td>中</td><td>中</td><td>高</td></tr>
+    <tr><td style="color:#f87171;">战士</td><td>放血流</td><td>自伤→力量转化</td><td>高</td><td>高</td><td>高</td><td>低</td></tr>
+    <tr class="highlight-row"><td style="color:#4ade80;font-weight:700;">猎手</td><td>飞刀流</td><td>飞刀→精准倍增</td><td>中</td><td>低</td><td>高</td><td>中</td></tr>
+    <tr><td style="color:#4ade80;">猎手</td><td>毒流</td><td>叠毒→触媒爆发</td><td>低</td><td>中</td><td>高</td><td>低</td></tr>
+    <tr><td style="color:#4ade80;">猎手</td><td>奇巧弃牌流</td><td>谋划专家→无限循环</td><td>中</td><td>高</td><td>极高</td><td>中</td></tr>
+    <tr class="highlight-row"><td style="color:#facc15;font-weight:700;">储君</td><td>辉星流</td><td>产星→辐射输出</td><td>低</td><td>低</td><td>高</td><td>中</td></tr>
+    <tr><td style="color:#facc15;">储君</td><td>铸剑流</td><td>大爆炸→剑秒杀</td><td>中</td><td>中</td><td>极高</td><td>低</td></tr>
+    <tr><td style="color:#facc15;">储君</td><td>王者踢流</td><td>删牌→无限循环</td><td>高</td><td>高</td><td>高</td><td>中</td></tr>
+    <tr class="highlight-row"><td style="color:#c084fc;font-weight:700;">亡灵契约师</td><td>灵魂抽排流</td><td>挽歌+重构循环</td><td>中</td><td>中</td><td>极高</td><td>中</td></tr>
+    <tr><td style="color:#c084fc;">亡灵契约师</td><td>虚无流</td><td>虚无词缀压缩</td><td>低</td><td>低</td><td>中</td><td>中</td></tr>
+    <tr><td style="color:#c084fc;">亡灵契约师</td><td>召唤流</td><td>奥斯提反弹伤害</td><td>中</td><td>中</td><td>中</td><td>高</td></tr>
+    <tr class="highlight-row"><td style="color:#60a5fa;font-weight:700;">故障机器人</td><td>利爪流</td><td>0费牌→爪击累加</td><td>低</td><td>低</td><td>高</td><td>中</td></tr>
+    <tr><td style="color:#60a5fa;">故障机器人</td><td>充能球流</td><td>充能球循环触发</td><td>中</td><td>中</td><td>中</td><td>高</td></tr>
+    <tr><td style="color:#60a5fa;">故障机器人</td><td>无限能力流</td><td>能力堆叠→多重释放</td><td>高</td><td>高</td><td>高</td><td>中</td></tr>
+  </table>
+</div>
+<div class="slide end-slide">
+  <div style="font-size:0.85rem;color:var(--text-dim);letter-spacing:3px;margin-bottom:16px;">2026 年 3 月 · 抢先体验版</div>
+  <h2>祝你在尖塔中一路顺风</h2>
+  <div class="end-sub" style="margin-bottom:24px;">五角色 · 16 大流派 · 完整卡牌构筑指南</div>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:10px 20px;">
+      <div style="font-size:0.75rem;color:var(--text-dim);">战士</div>
+      <div style="font-size:0.9rem;font-weight:700;color:#f87171;">轮椅流</div>
+    </div>
+    <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:10px 20px;">
+      <div style="font-size:0.75rem;color:var(--text-dim);">猎手</div>
+      <div style="font-size:0.9rem;font-weight:700;color:#4ade80;">奇巧弃牌流</div>
+    </div>
+    <div style="background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.2);border-radius:10px;padding:10px 20px;">
+      <div style="font-size:0.75rem;color:var(--text-dim);">储君</div>
+      <div style="font-size:0.9rem;font-weight:700;color:#facc15;">辉星流</div>
+    </div>
+    <div style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);border-radius:10px;padding:10px 20px;">
+      <div style="font-size:0.75rem;color:var(--text-dim);">亡灵契约师</div>
+      <div style="font-size:0.9rem;font-weight:700;color:#c084fc;">灵魂抽排流</div>
+    </div>
+    <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:10px 20px;">
+      <div style="font-size:0.75rem;color:var(--text-dim);">故障机器人</div>
+      <div style="font-size:0.9rem;font-weight:700;color:#60a5fa;">利爪流</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<nav class="nav-dots" id="navDots"></nav>
+<div class="slide-counter" id="slideCounter"></div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+const total = slides.length;
+
+function goTo(i) {
+  if (i < 0 || i >= total) return;
+  slides[current].classList.remove('active');
+  current = i;
+  slides[current].classList.add('active');
+  document.getElementById('progressBar').style.width = ((current+1)/total*100)+'%';
+  document.getElementById('slideCounter').textContent = (current+1)+' / '+total;
+  document.querySelectorAll('.nav-dot').forEach((d,idx) => d.classList.toggle('active', idx===current));
+}
+
+// Build nav dots
+const navDots = document.getElementById('navDots');
+for (let i=0; i<total; i++) {
+  const d = document.createElement('button');
+  d.className = 'nav-dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  navDots.appendChild(d);
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown') { e.preventDefault(); goTo(current+1); }
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') { e.preventDefault(); goTo(current-1); }
+});
+
+// Wheel
+let wheelTimeout;
+document.addEventListener('wheel', e => {
+  if (wheelTimeout) return;
+  wheelTimeout = setTimeout(()=>{ wheelTimeout=null; }, 400);
+  if (e.deltaY > 0) goTo(current+1);
+  else goTo(current-1);
+}, {passive:true});
+
+// Touch
+let touchY;
+document.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; });
+document.addEventListener('touchend', e => {
+  const dy = touchY - e.changedTouches[0].clientY;
+  if (Math.abs(dy) > 40) { dy > 0 ? goTo(current+1) : goTo(current-1); }
+});
+
+goTo(0);
+</script>
+</body>
+</html>
